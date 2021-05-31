@@ -1,111 +1,80 @@
-				import java.util.*;
-				import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.List;
+import java.util.StringTokenizer;
 
+public class Main implements Runnable {
 
-				public class Main implements Runnable{
+    long INF = (long) 1e9 + 7;
 
-					final long INF = (long) 1e9 + 7;
-					boolean vis[][];
-					int k;
+    private void solve() throws IOException {
+        int n = nextInt();
+        int k = nextInt();
+        String s = next();
+        char c[] = s.toCharArray();
+        long ans = 0;
+        long t = n / 2 + (n % 2 != 0 ? 1 : 0);
+        for (int i = 0; i < t; ++i) {
+            int cur = c[i] - 'a';
+            int rem = t - 1 - i;
+            ans = (ans + cur * pow(k, rem) % INF) % INF;
+        }
+        boolean ok = false;
+        for (int i = 0; i < t; ++i) {
+            if (c[i] < c[N - 1 - i]) {
+                ok  = true;
+                break;
+            }
+        }
+        if (ok) {
+            ans++;
+            ans %= INF; 
+        }
 
-					static class Pair implements Comparable<Pair> {
-						int first;
-						long second;
+    }
 
-						Pair(int first, long second) {
-							this.first = first;
-							this.second = second;
-						}
+    public static void main(String[] args) {
+        new Main().run();
+    }
 
-						public int compareTo(Pair p) {
-							return Long.compare(second, p.second);
-						}
+    BufferedReader reader;
+    StringTokenizer tokenizer;
+    PrintWriter writer;
 
-					}
+    public void run() {
+        try {
+            reader = new BufferedReader(new InputStreamReader(System.in));
+            tokenizer = null;
+            writer = new PrintWriter(System.out);
+            int t = nextInt();
+            for (int i = 0)
+            solve();
+            reader.close();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 
-					private long pow(long a, long p) {
-						long prod = 1;
-						while (p > 0) {
-							if ((p & 1) == 1) {
-								prod = prod * a % INF;
-							}
-							a = a * a % INF;
-							p >>= 1;
-						}
-						return prod;
-					}
+    int nextInt() throws IOException {
+        return Integer.parseInt(nextToken());
+    }
 
-					private void solve() throws IOException {
-						long n = nextInt();
-						long m = nextInt();
-						long ans = pow(2, m);
-						ans -= 1;
-						if (ans < 0) ans += INF;
-						ans = pow(ans, n);
-						pw.println(ans);
-					}
+    long nextLong() throws IOException {
+        return Long.parseLong(nextToken());
+    }
 
+    double nextDouble() throws IOException {
+        return Double.parseDouble(nextToken());
+    }
 
-
-					
-					private void dbg(Object... a) {
-						System.err.println(Arrays.deepToString(a));
-					}
-
-					private void brute() throws IOException {
-
-					}
-
-					private void test() throws IOException {
-						Random rnd = new Random();
-						for (int i = 0; i < 10; ++i) {
-							int n = rnd.nextInt(10) + 1;
-							int a[] = new int[n];
-							for (int j = 0; j < n; ++j) {
-								a[j] = rnd.nextInt(2);
-							}
-							System.err.println(Arrays.toString(a));
-						}
-					}
-
-					public static void main(String args[]) {
-						new Main().run();
-					}
-
-					BufferedReader br;
-					PrintWriter pw;
-					StringTokenizer st;
-
-					public void run() {
-						try {
-							br = new BufferedReader(new InputStreamReader(System.in));
-							pw = new PrintWriter(System.out);
-							st = null;
-							solve();
-							pw.flush();
-							pw.close();
-						} catch (IOException e) {
-							e.printStackTrace();
-							System.exit(1);
-						}
-					}
-
-					public String next() throws IOException {
-						while (st == null || !st.hasMoreTokens()) {
-							st = new StringTokenizer(br.readLine());	
-						}
-						return st.nextToken();
-					}
-
-					public int nextInt() throws IOException { 
-						return Integer.parseInt(next());
-					}
-
-					public long nextLong() throws IOException{
-						return Long.parseLong(next());	
-					}
-
-					public double nextDouble() throws IOException {
-						return Double.parseDouble(next());
-					}
-				}
+    String nextToken() throws IOException {
+        while (tokenizer == null || !tokenizer.hasMoreTokens()) {
+            tokenizer = new StringTokenizer(reader.readLine());
+        }
+        return tokenizer.nextToken();
+    }
+}
