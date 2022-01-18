@@ -17,18 +17,24 @@ ll rand(ll B) {
 	return (ull) rng() % B;
 }
 
+void test() {
+	// int t = 10;
+	// cout << t << '\n';
+	// for (int i = 1; i <= t; ++i) {
+	// 	int n = rand(10) + 1, m = rand(10) + 1;
+	// 	int a, b;
+	// 	a = rand(1000) + 1, b = rand(1000) + 1;
+	// 	cout << n << ' ' << m << ' ' << a << ' ' << b << '\n';
+	// }
+	set<int> s;
+	s.insert(1);
+	auto it = s.begin();
+	cout << *it << '\n';
+	s.insert(0);
+	cout << *it << '\n';
+}
+
 int main() {
-	int tt = 10;
-	cout << tt << '\n';
-	for (int t = 0; t < tt; ++t) {	
-	int n = rand(8) + 1;
-		cout << n << ' ' << 5 << '\n';
-		string s;
-		for (int i = 0; i < n; ++i) {
-			int cur = rand(5);
-			s += (cur + 'a');
-		}
-		cout << s << '\n';
-	}
+	test();
 	return 0;
 }

@@ -1,4 +1,6 @@
-#include<bits/stdc++.h>
+
+	#define _GLIBCXX_DEBUG 1;
+	#include<bits/stdc++.h>
 
 using namespace std;
 
@@ -10,12 +12,12 @@ string to_string(const char* s) {
 	return to_string((string) s);
 }
 
-template <typename A, typename B>
+	template <typename A, typename B>
 string to_string(pair<A, B> p) {
 	return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
 }
 
-template <typename A>
+	template <typename A>
 string to_string(A v) {
 	bool first = true;
 	string res = "{";
@@ -44,100 +46,44 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+
+mt19937_64 rng(chrono :: steady_clock :: now().time_since_epoch().count());
+
 using ll = long long;
-using ld = long double;
-using ull = unsigned long long;
-
-
-
 typedef pair<int, int> pii;
-const ll INF = 998244353LL;
+
+const int INF = 1e9 + 7;
+vector<vector<int>> adj;
+vector<bool> vis;
+vector<vector<int>> d;
 
 void solve() {
-	int n;
-	cin >> n;
-	vector<ll> a(n), b(n);
-	for (int i = 0; i < n; ++i) {
-		cin >> a[i] >> b[i];
-		a[i]--, b[i]--;
+	int N, M, K;
+	cin >> N >> M >> K;
+	adj.resize(N);
+	vis.resize(N);
+	d.resize(K);
+	for (int i = 0; i < M; ++i) {
+		int a, b;
+		cin >> a >> b;
+		--a, --b;
+		adj[a].push_back(b);
+		adj[b].push_back(a);
 	}
-	vector<int> p(n);
-	iota(p.begin(), p.end(), 0);
-	vector<ll> fact(n + 1);
-	fact[0] = 1;
-	for (int i = 1; i <= n; ++i) {
-		fact[i] = fact[i - 1] * i % INF;
-	}
-	sort(p.begin(), p.end(), [&](int x, int y) {
-		return a[x] < a[y];
-	});
-	ll ans = fact[n];
-	debug(ans);
-	ll tmp = 1;
-	for (int i = 0; i < n;) {
-		int j = i;
-		while (j < n && a[p[i]] == a[p[j]]) {
-			++j;
-		}
-		tmp = tmp * fact[j - i] % INF;
-		i = j;
-	}
-	ans -= tmp;
-	if (ans < 0) ans += INF;
-	sort(p.begin(), p.end(), [&](int x, int y) {
-		return b[x] < b[y];
-	});
-	debug(ans, tmp);
-	tmp = 1;
-	for (int i = 0; i < n;) {
-		int j = i;
-		while (j < n && b[p[i]] == b[p[j]]) {
-			++j;
-		}
-		debug(i, j);
-		tmp = tmp * fact[j - i] % INF;
-		i = j;
-	}
-	ans -= tmp;
- 	if (ans < 0) ans += INF;
- 	sort(p.begin(), p.end(), [&](int x, int y) {
- 		if (a[x] == a[y])
- 			return b[x] < b[y];
- 		return a[x] < a[y];
- 	});
- 	debug(ans, tmp);
- 	for (int i = 0; i + 1 < n; ++i) {
- 		if (b[p[i]] > b[p[i + 1]]) {
- 			cout << ans << '\n';
- 			return;
- 		}
- 	}
- 	tmp = 1;
- 	for (int i = 0; i < n;) {
- 		int j = i;
- 		while (j < n && (a[p[i]] == a[p[j]] && b[p[i]] == b[p[j]])) {
- 			++j;
- 		}
- 		tmp = tmp * fact[j - i] % INF;
- 		i = j;
- 	}
- 	ans = (ans + tmp) % INF;
- 	debug(ans);
- 	cout << ans << '\n';
+	
 }
 
 int main() {
-	#ifdef LOCAL	
 
-	freopen("in1.txt", "r", stdin);
-	freopen("op1.txt", "w", stdout);
+		// freopen("in1.txt", "r", stdin);
+		// freopen("op1.txt", "w", stdout);
 
-	#endif
 	ios :: sync_with_stdio(false);
 	cin.tie(0);
+	cout << fixed << setprecision(20);
 	int tt = 1;
-	// cin >> tt;
-	while (tt--) {
+		// cin >> tt;
+	for (int i = 1; i <= tt; ++i) {
 		solve();
 	}
 	return 0;

@@ -1,3 +1,5 @@
+
+#define _GLIBCXX_DEBUG 1;
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -44,32 +46,26 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+
+mt19937_64 rng(chrono :: steady_clock :: now().time_since_epoch().count());
+
 using ll = long long;
-using ld = long double;
-using ull = unsigned long long;
-
-
-
 typedef pair<int, int> pii;
-const int INF = 1e9 + 7;
 
 void solve() {
-	int n;
-	cin >> n;
 	
 }
 
 int main() {
-	#ifdef LOCAL	
 
-	freopen("in1.txt", "r", stdin);
-	freopen("op1.txt", "w", stdout);
+	// freopen("in1.txt", "r", stdin);
+	// freopen("op1.txt", "w", stdout);
 
-	#endif
 	ios :: sync_with_stdio(false);
 	cin.tie(0);
+	cout << fixed << setprecision(20);
 	int tt = 1;
-	cin >> tt;
+	// cin >> tt;
 	while (tt--) {
 		solve();
 	}

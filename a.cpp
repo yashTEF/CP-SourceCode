@@ -44,18 +44,18 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+
+mt19937_64 rng(chrono :: steady_clock :: now().time_since_epoch().count());
+
 using ll = long long;
-using ld = long double;
-using ull = unsigned long long;
+using pii = pair<int, int>;
 
-
-
-typedef pair<int, int> pii;
 const ll INF = 1e9 + 7;
+const int B = 31;
 
 ll pow(ll a, ll p) {
 	ll prod = 1;
-	while(p > 0) {
+	while (p > 0) {
 		if (p & 1) {
 			prod = prod * a % INF;
 		}
@@ -65,67 +65,47 @@ ll pow(ll a, ll p) {
 	return prod;
 }
 
-ll brute() {
-	ll N, K;
-	cin >> N >> K;
-	string s;
-	cin >> s;
-	vector<int> p(N);
-	iota(p.begin(), p.end(), 0);
-	ll ans = 0;
-	do {
-
-	} while (next_permutation(p.begin(), p.end()));	
-	return ans;
-}
-
-
-ll solve() {
-	ll N, K;
-	cin >> N >> K;
-	string s;
-	cin >> s;
-	ll ans = 0LL;
-	debug(s);
-	ll t = N / 2 + (N % 2 != 0);
-	for (ll i = 0; i < t; ++i) {
-		ll cur = s[i] - 'a';
-		ll rem = (t - i - 1);
-		debug(cur, rem, t);	
-		ans = (ans + (cur * 1LL * pow(K, rem) % INF)) % INF;
-	}	
-	debug(ans);
-	bool ok = false;
-	for (ll i = t - 1; i >= 0; --i) {
-		if (s[i] != s[N - 1 - i]) {
-			if (s[i] < s[N - 1 - i]) {
-				ok = true;
-			}
-			break;
+void solve(int test) {
+	int N;
+	cin >> N;
+	vector<int> h(N), k(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> k[i];
+	}
+	for (int i = 0; i < N; ++i) {
+		cin >> h[i];
+	}
+	vector<int> suff(N);
+	for (int i = N - 1; i >= 0; --i) {
+		suff[i] = k[i] - h[i] + 1;
+		debug(suff[i]);
+		if (i + 1 < N) {
+			suff[i] = min(suff[i + 1], suff[i]);
 		}
 	}
-	if (ok) {
-		ans++;
-		ans %= INF;	
+	debug(suff);	
+	int st = suff[0];
+	ll ans = 0;
+	for (int i = 0; i < N; ++i) {
+		if (i == N - 1 || suff[i + 1] > k[i]) {
+			ll len = k[i] - st + 1;
+			debug(k[i], st);
+			ans += len * (len + 1) / 2;
+			if (i + 1 < N)
+				st = suff[i + 1];
+		}
 	}
-	return ans;
+	cout << ans << '\n';
 }
 
 int main() {
-	#ifdef LOCAL	
 
-	freopen("in1.txt", "r", stdin);
-	freopen("op1.txt", "w", stdout);
-
-	#endif
-	ios :: sync_with_stdio(false);
+	ios_base::sync_with_stdio(false);
 	cin.tie(0);
-	int tt = 1;
-	cin >> tt;	
-	for (int i = 1; i <= tt; ++i) {
-		auto ans = solve	();
-		cout << "Case #" << i << ": " << ans << '\n'; 
-	}
-	return 0;
 
-}				
+	int T = 1;
+	cin >> T;
+	for (int i = 1; i <= T; ++i) solve(i);
+
+		return 0;
+}	

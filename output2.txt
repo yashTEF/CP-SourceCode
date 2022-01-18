@@ -5,7 +5,4 @@ Case #4: 3
 Case #5: -1
 Case #6: 8
 Case #7: 100
-Case #8: 5
-Case #9: 108
-Case #10: -1
-Case #11: 103
+

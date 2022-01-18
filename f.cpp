@@ -1,3 +1,4 @@
+#define _GLIBCXX_DEBUG 1;
 #include<bits/stdc++.h>
 
 using namespace std;
@@ -44,59 +45,86 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+
+mt19937_64 rng(chrono :: steady_clock :: now().time_since_epoch().count());
+
 using ll = long long;
-using ld = long double;
-using ull = unsigned long long;
-
-
-
-typedef pair<int, int> pii;
-const ll INF = 1e9 + 7;
-
-ll pow(ll a, ll p) {
-	ll prod = 1;
-	while (p > 0) {
-		if (p & 1) {
-			prod = prod * a % INF;
-		}
-		a = a * a % INF;
-		p >>= 1;
-	}
-	return prod;
-}
-
-ll inv(ll a) {
-	return pow(a, INF - 2);
-}
+using pii = pair<int, int>;
 
 void solve() {
-	ll n;
-	cin >> n;
-	ll ans = 0;
-	ans = (ans + pow(2LL, pow(n, 2LL))) % INF;
-	ans %= INF;
-	if (n & 1) {
-		ans = (ans + (pow(2LL, (pow(n, 2LL) + 3LL) / 4LL)) * 2LL % INF) % INF;
-		ans = (ans + (pow(2LL , (pow(n, 2LL) + 1LL) / 2LL)) % INF) % INF ;
-		ans %= INF;
-	} else {
-		ans = (ans + (pow(2LL, pow(n, 2LL) / 4LL) * 2LL % INF)) % INF;
-		ans = (ans + (pow(2LL , pow(n, 2LL) / 2LL) % INF)) % INF;
-		ans %= INF;
+	int N;
+	cin >> N;
+	vector<int> x(N), p(N);
+	for (int i = 0; i < N; ++i) {
+		cin >> x[i];
+		--x[i];
+		p[i] = i;
 	}
-	ans = ans * inv(4LL) % INF;
-	cout << ans << '\n';
+	sort(p.begin(), p.end(), [&](int i, int j) {
+		return x[i] < x[j];
+	});
+	vector<int> ans(N * N, -1);
+	int taken = 0;
+	for (int i : p) {
+		if (x[i] - taken < i) {
+			cout << "No\n";
+			return;
+		}
+		ans[x[i]] = i + 1;
+		int remaining = i;
+		for (int j = 0; j < x[i]; ++j) {
+			if (ans[j] == -1 && remaining) {
+				ans[j] = i + 1;
+				--remaining;
+			}
+		}
+		taken += i + 1;
+	}	
+	debug(ans);
+	for (int i : p) {
+		int remaining = N - (i + 1);
+		for (int j = x[i] + 1; j < N * N; ++j) {
+			if (remaining == 0) {
+				break;
+			}
+			if (ans[j] == -1) {
+				ans[j] = i + 1;
+				--remaining;
+			}
+		}
+		if (remaining != 0) {
+			cout << "No\n";
+			return;
+		}
+	}
+	// assert(taken == N * N);
+	// for (int i = 1; i <= N; ++i) {
+	// 	int times = 0;
+	// 	for (int j = 0; j < N * N; ++j) {
+	// 		if (ans[j] == i) {
+	// 			++times;
+	// 			if (times == i) {
+	// 				assert(j == x[i - 1]);
+	// 			}
+	// 		}
+	// 	}
+	// 	assert(times == N);
+	// }
+	cout << "Yes\n";
+	for (auto c : ans) {
+		cout << c << ' ';
+	}
+	cout << '\n';
 }
 
 int main() {
-	#ifdef LOCAL	
 
-	freopen("in1.txt", "r", stdin);
-	freopen("op1.txt", "w", stdout);
+	// freopen("in1.txt", "r", stdin);
+	// freopen("op1.txt", "w", stdout);
 
-	#endif
 	ios :: sync_with_stdio(false);
 	cin.tie(0);
+	cout << fixed << setprecision(20);
 	int tt = 1;
 	// cin >> tt;
 	while (tt--) {
@@ -104,4 +132,4 @@ int main() {
 	}
 	return 0;
 
-}				
+}
